@@ -1,17 +1,67 @@
 <script setup>
+import { useDark } from '@vueuse/core'
+import { ref, watch } from 'vue';
+import { showToast } from 'vant';
+import axios from 'axios'
+
+const isDark = useDark()
+const showButton = ref(false)
+const value = ref('');
+const errorInfo = ref('');
+const showKeyboard = ref(true);
+const ACCESS_TOKEN = '000000';
+// const axios = require('axios');
+
+watch(value, (newVal) => {
+  if (newVal.length === 6 && newVal !== ACCESS_TOKEN) {
+    errorInfo.value = '密码错误';
+    showKeyboard.value = false;
+    setTimeout(() => {
+      showButton.value = false;
+      value.value = '';
+    }, 500);
+  } else if (newVal.length === 6 && newVal === ACCESS_TOKEN) {
+    showButton.value = true;
+    showKeyboard.value = false;
+  } else {
+    errorInfo.value = '';
+  }
+});
+
+const openDoor = () => {
+  showToast({
+    message: '开门成功',
+    icon: 'like-o',
+  });
+  setTimeout(() => {
+    showButton.value = false;
+    value.value = '';
+  }, 1800);
+}
 
 </script>
 
 <template>
-  <van-config-provider class="page" theme="dark">
-    <van-card num="2" price="2.00" desc="描述信息" title="商品标题"
-      thumb="https://fastly.jsdelivr.net/npm/@vant/assets/ipad.jpeg" />
+  <van-config-provider :theme="isDark ? 'dark' : 'light'">
+    <div class="van-input">
+      <van-password-input v-if="!showButton" :value="value" info="密码为 6 位数字" :error-info="errorInfo"
+        :focused="showKeyboard" @focus="showKeyboard = true" />
+      <van-number-keyboard v-model="value" :show="showKeyboard" @blur="showKeyboard = false" />
+      <van-button v-if="showButton" type="primary" size="large" @click="openDoor">芝麻开门</van-button>
+    </div>
   </van-config-provider>
 </template>
 
 <style>
-.page {
-  width: 100vw;
-  height: 100vh;
+.van-theme-dark body {
+  color: #ffffff;
+  background-color: black;
+}
+
+.van-input {
+  margin-top: 130px;
+  text-align: center;
+  margin-left: 20px;
+  margin-right: 20px
 }
 </style>
