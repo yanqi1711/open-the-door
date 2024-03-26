@@ -59,9 +59,7 @@ const openDoor = () => {
 }
 
 .van-input {
-  margin-top: 130px;
   text-align: center;
-  margin-left: 20px;
-  margin-right: 20px
+  margin: 130px 20px;
 }
 </style>
