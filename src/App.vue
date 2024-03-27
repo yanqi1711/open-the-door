@@ -1,8 +1,6 @@
 <script setup>
 import { useDark } from '@vueuse/core'
 import { ref, watch } from 'vue';
-import { showToast } from 'vant';
-import axios from 'axios'
 
 const isDark = useDark()
 const showButton = ref(false)
@@ -10,7 +8,6 @@ const value = ref('');
 const errorInfo = ref('');
 const showKeyboard = ref(true);
 const ACCESS_TOKEN = '000000';
-// const axios = require('axios');
 
 watch(value, (newVal) => {
   if (newVal.length === 6 && newVal !== ACCESS_TOKEN) {
@@ -59,7 +56,7 @@ const openDoor = () => {
 }
 
 .van-input {
+  margin: 150px 20px;
   text-align: center;
-  margin: 130px 20px;
 }
 </style>
